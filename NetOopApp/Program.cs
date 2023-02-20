@@ -1,4 +1,6 @@
-﻿namespace NetOopApp
+﻿using System.Xml.Linq;
+
+namespace NetOopApp
 {
     class Person
     {
@@ -25,11 +27,21 @@
         {
             Console.WriteLine($"Name: {name}");
         }
+        public void PrintFull()
+        {
+            Console.WriteLine($"{Name} {Age}");
+        }
     }
 
     class Employe : Person
     {
         int salary;
+
+        public new string Name
+        {
+            get => "mr. " + base.Name;
+            set => base.Name = value;
+        }
         public int Salary
         {
             get => salary;
@@ -56,6 +68,11 @@
             base.Print();
             Console.WriteLine($"Salary: {salary}");
         }
+
+        public new void PrintFull()
+        {
+            Console.WriteLine($"{Name} {Age} {Salary}");
+        }
     }
 
     class Citizen : Person
@@ -78,19 +95,27 @@
     {
         static void Main(string[] args)
         {
-            Person person = new Person();
-            person = new Employe();
-            person = new Citizen();
+            Person person = new Person() { Name = "Person", Age = 23 };
+            person.Print();
+            person.PrintFull();
 
-            ((Citizen)person).Passport = "AS56565";
-            var obj = person as Citizen;
-            if(obj is not null)
-                obj.Passport = "AS23456";
+            person = new Employe() { Name = "Employe", Age = 34, Salary = 50000 };
+            person.Print();
+            ((Employe)person).PrintFull();
 
-            IsPerson(new Person() { Name = "Person" });
-            IsPerson(new Employe() { Name = "Emplye", Salary = 10000 });
-            IsPerson(new Citizen() { Name = "Citizen", Passport = "AS12345"});
-            IsPerson(new MyClass());
+            person = new Citizen() { Name = "Citizen", Age = 43, Passport = "AS12344" };
+            person.Print();
+            person.PrintFull();
+
+            //((Citizen)person).Passport = "AS56565";
+            //var obj = person as Citizen;
+            //if(obj is not null)
+            //    obj.Passport = "AS23456";
+
+            //IsPerson(new Person() { Name = "Person" });
+            //IsPerson(new Employe() { Name = "Emplye", Salary = 10000 });
+            //IsPerson(new Citizen() { Name = "Citizen", Passport = "AS12345"});
+            //IsPerson(new MyClass());
 
             void IsPerson(object obj)
             {
